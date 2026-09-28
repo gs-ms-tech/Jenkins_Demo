@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "================================"
-echo " Jenkins GitHub Demo"
+echo " My first automatic Jenkins build......."
 echo "================================"
 echo "Build triggered successfully!"
 echo "Hello from Jenkins!"
