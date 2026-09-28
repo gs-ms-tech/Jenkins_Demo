@@ -14,7 +14,7 @@ pipeline {
 
     post {
         always {
-            emailext(
+            mail(
                 to: 'georgestephenms@gmail.com',
                 subject: "Jenkins Build #${BUILD_NUMBER}",
                 body: """
