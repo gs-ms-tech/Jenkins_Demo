@@ -2,30 +2,37 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+
+        stage('Checkout') {
             steps {
-                echo 'Build triggered successfully!'
-                echo 'Hello from Jenkins!'
-                sh 'date'
+                echo 'Pulling code from Git repository...'
+                git branch: 'main', url: 'https://github.com/gs-ms-tech/Jenkins_Demo.git'
+            }
+        }
+
+        stage('Run Script') {
+            steps {
+				echo 'Executing Script...'
+				sh 'chmod +x demo.sh'
+                sh './demo.sh'
                 echo 'Script completed successfully....'
             }
         }
     }
-
-    post {
-        always {
+     post {
+        success {
             mail(
                 to: 'georgestephenms@gmail.com',
-                subject: "Jenkins Build #${BUILD_NUMBER}",
-                body: """
-Build completed successfully.
+                subject: "Jenkins Build Successful - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: "The Jenkins build ${env.BUILD_NUMBER} completed successfully."
+            )
+        }
 
-Job: ${JOB_NAME}
-Build Number: ${BUILD_NUMBER}
-Build Status: ${currentBuild.currentResult}
-
-Please check Jenkins for more details.
-"""
+        failure {
+            mail(
+                to: 'georgestephenms@gmail.com',
+                subject: "Jenkins Build Failed - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: "The Jenkins build ${env.BUILD_NUMBER} has failed. Please check Jenkins console output."
             )
         }
     }
