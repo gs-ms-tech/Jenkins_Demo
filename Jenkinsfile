@@ -12,36 +12,27 @@ pipeline {
 
         stage('Run Script') {
             steps {
-				echo 'Executing Script...'
-				sh 'chmod +x demo.sh'
+                                echo 'Executing Script...'
+                                sh 'chmod +x demo.sh'
                 sh './demo.sh'
                 echo 'Script completed successfully....'
             }
         }
     }
-      post {
-        always {
+     post {
+        success {
             mail(
-                to: 'YOUR_EMAIL@example.com',
-                subject: "Jenkins Build ${BUILD_NUMBER} - ${currentBuild.currentResult}",
-                body: """
-Hello,
+                to: 'georgestephenms@gmail.com',
+                subject: "Jenkins Build Successful - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: "The Jenkins build ${env.BUILD_NUMBER} completed successfully."
+            )
+        }
 
-Jenkins build has completed.
-
-Project: ${JOB_NAME}
-Build Number: ${BUILD_NUMBER}
-Status: ${currentBuild.currentResult}
-
-Git Commit: ${GIT_COMMIT}
-
-Jenkins Build URL:
-${BUILD_URL}
-
-Regards,
-Jenkins
-""",
-                attachLog: true
+        failure {
+            mail(
+                to: 'georgestephenms@gmail.com',
+                subject: "Jenkins Build Failed - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: "The Jenkins build ${env.BUILD_NUMBER} has failed. Please check Jenkins console output."
             )
         }
     }
