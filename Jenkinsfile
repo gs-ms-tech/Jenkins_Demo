@@ -15,7 +15,7 @@ pipeline {
 		echo 'Executing Script...'
 		sh 'chmod +x demo.sh'
                 sh './demo.sh'
-                echo 'Script completed successfully'
+                echo 'Script completed successfully...'
             }
         }
     }
